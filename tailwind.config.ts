@@ -24,6 +24,36 @@ export default {
 				ring: 'hsl(var(--ring))',
 				background: 'hsl(var(--background))',
 				foreground: 'hsl(var(--foreground))',
+				
+				/* Wave Brand Colors */
+				wave: {
+					primary: 'hsl(var(--wave-primary))',
+					'primary-foreground': 'hsl(var(--wave-primary-foreground))',
+					secondary: 'hsl(var(--wave-secondary))',
+					accent: 'hsl(var(--wave-accent))',
+					success: 'hsl(var(--wave-success))',
+					warning: 'hsl(var(--wave-warning))',
+					error: 'hsl(var(--wave-error))',
+					border: 'hsl(var(--wave-border))',
+					input: 'hsl(var(--wave-input))',
+					ring: 'hsl(var(--wave-ring))',
+				},
+				
+				/* Surface Colors */
+				surface: {
+					primary: 'hsl(var(--surface-primary))',
+					secondary: 'hsl(var(--surface-secondary))',
+					tertiary: 'hsl(var(--surface-tertiary))',
+				},
+				
+				/* Text Colors */
+				text: {
+					primary: 'hsl(var(--text-primary))',
+					secondary: 'hsl(var(--text-secondary))',
+					muted: 'hsl(var(--text-muted))',
+				},
+				
+				/* Standard shadcn colors */
 				primary: {
 					DEFAULT: 'hsl(var(--primary))',
 					foreground: 'hsl(var(--primary-foreground))'
@@ -62,6 +92,25 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				}
+			},
+			
+			/* Wave Gradients */
+			backgroundImage: {
+				'wave-gradient': 'var(--gradient-wave)',
+				'surface-gradient': 'var(--gradient-surface)',
+				'glow-gradient': 'var(--gradient-glow)',
+			},
+			
+			/* Wave Shadows */
+			boxShadow: {
+				'wave': 'var(--shadow-wave)',
+				'wave-glow': 'var(--shadow-wave-glow)',
+				'surface': 'var(--shadow-surface)',
+			},
+			
+			/* Wave Transitions */
+			transitionTimingFunction: {
+				'wave': 'cubic-bezier(0.4, 0, 0.2, 1)',
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
