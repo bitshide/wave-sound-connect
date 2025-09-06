@@ -50,20 +50,18 @@ export function ChatSidebar({ className }: ChatSidebarProps) {
 
       {/* Servers - Minimized */}
       <div className="px-4 py-2 border-b border-wave-border">
-        <div className="flex items-center gap-2 overflow-x-auto">
-          {servers.map((server) => (
-            <div
-              key={server.id}
-              className={cn(
-                "flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center text-xs font-semibold cursor-pointer transition-all",
-                server.active ? "bg-wave-gradient text-wave-primary-foreground" : "bg-surface-tertiary text-text-secondary hover:bg-surface-tertiary"
-              )}
-              title={server.name}
-            >
-              {server.name.split(' ').map(word => word[0]).join('')}
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 rounded-lg bg-wave-gradient flex items-center justify-center cursor-pointer transition-all">
+              <div className="w-4 h-4 text-wave-primary-foreground">
+                <svg viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
+                  <path d="M2 12c0-2.5 2-4.5 4.5-4.5s4.5 2 4.5 4.5-2 4.5-4.5 4.5S2 14.5 2 12zm6 0c0 2.5 2 4.5 4.5 4.5s4.5-2 4.5-4.5-2-4.5-4.5-4.5S8 9.5 8 12zm6 0c0-2.5 2-4.5 4.5-4.5s4.5 2 4.5 4.5-2 4.5-4.5 4.5S14 14.5 14 12z"/>
+                </svg>
+              </div>
             </div>
-          ))}
-          <WaveButton variant="ghost" size="icon" className="flex-shrink-0 w-8 h-8">
+            <span className="text-xs text-text-muted">Сервер</span>
+          </div>
+          <WaveButton variant="ghost" size="icon" className="w-6 h-6">
             <Plus className="w-3 h-3" />
           </WaveButton>
         </div>
@@ -82,41 +80,49 @@ export function ChatSidebar({ className }: ChatSidebarProps) {
             <div
               key={channel.id}
               className={cn(
-                "flex items-center gap-3 px-3 py-3 rounded-xl cursor-pointer transition-all duration-200 hover:bg-surface-tertiary",
+                "flex items-center gap-3 px-3 py-2 rounded-lg cursor-pointer transition-all duration-200 hover:bg-surface-tertiary",
                 channel.type === "voice" && channel.active && "bg-wave-primary/10"
               )}
             >
               <div className="relative">
                 <div className={cn(
-                  "w-10 h-10 rounded-full flex items-center justify-center text-sm font-semibold",
-                  channel.type === "text" ? "bg-wave-primary text-wave-primary-foreground" : "bg-wave-success text-white"
+                  "w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold",
+                  channel.type === "text" ? "bg-wave-primary/20 text-wave-primary" : "bg-wave-success/20 text-wave-success"
                 )}>
                   {channel.type === "text" ? (
-                    <Hash className="w-5 h-5" />
+                    <Hash className="w-4 h-4" />
                   ) : (
-                    <Volume2 className="w-5 h-5" />
+                    <Volume2 className="w-4 h-4" />
                   )}
                 </div>
                 {channel.type === "voice" && channel.active && (
-                  <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-wave-success rounded-full border-2 border-surface-primary">
+                  <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-wave-success rounded-full border-2 border-surface-primary">
                     <div className="w-full h-full rounded-full bg-wave-success animate-pulse"></div>
                   </div>
                 )}
               </div>
               
               <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2">
+                <div className="flex items-center justify-between">
                   <span className="text-sm font-medium text-text-primary truncate">
-                    {channel.type === "text" ? "#" : "🔊"} {channel.name}
+                    {channel.type === "text" ? "#" : ""} {channel.name}
                   </span>
-                  {channel.unread > 0 && (
-                    <span className="bg-wave-primary text-wave-primary-foreground text-xs px-2 py-1 rounded-full min-w-[20px] text-center">
-                      {channel.unread}
-                    </span>
-                  )}
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs text-text-muted">17:31</span>
+                    {channel.unread > 0 && (
+                      <span className="bg-wave-primary text-wave-primary-foreground text-xs px-1.5 py-0.5 rounded-full min-w-[18px] text-center">
+                        {channel.unread}
+                      </span>
+                    )}
+                  </div>
                 </div>
-                <p className="text-xs text-text-muted truncate">
-                  {channel.type === "text" ? "Текстовый канал" : channel.active ? "В голосовом канале" : "Голосовой канал"}
+                <p className="text-xs text-text-muted truncate mt-0.5">
+                  {channel.type === "text" 
+                    ? "Последнее сообщение в канале..." 
+                    : channel.active 
+                      ? "В голосовом канале" 
+                      : "Голосовой канал"
+                  }
                 </p>
               </div>
             </div>

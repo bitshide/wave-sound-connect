@@ -128,7 +128,7 @@ export function ChatArea({ className }: ChatAreaProps) {
       </div>
 
       {/* Message Input */}
-      <div className="p-4 border-t border-wave-border bg-surface-primary">
+      <div className="p-4 border-t border-wave-border bg-surface-primary mt-auto">
         <MessageInput />
       </div>
     </div>
