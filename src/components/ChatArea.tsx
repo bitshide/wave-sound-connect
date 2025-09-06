@@ -1,6 +1,7 @@
-import { Send, Paperclip, Smile, Phone, Video, MoreVertical, Hash } from "lucide-react"
+import { Phone, Video, MoreVertical, Hash } from "lucide-react"
 import { WaveButton } from "./WaveButton"
 import { WaveCard } from "./WaveCard"
+import { MessageInput } from "./MessageInput"
 import { cn } from "@/lib/utils"
 
 interface ChatAreaProps {
@@ -128,34 +129,7 @@ export function ChatArea({ className }: ChatAreaProps) {
 
       {/* Message Input */}
       <div className="p-4 border-t border-wave-border bg-surface-primary">
-        <div className="flex items-end gap-3">
-          <WaveButton variant="ghost" size="icon">
-            <Paperclip className="w-4 h-4" />
-          </WaveButton>
-          
-          <div className="flex-1 relative">
-            <textarea
-              placeholder="Написать сообщение в #general..."
-              className="w-full bg-surface-secondary border border-wave-border rounded-lg px-4 py-3 pr-12 text-sm text-text-primary placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-wave-ring focus:border-wave-primary transition-all resize-none min-h-[44px] max-h-32"
-              rows={1}
-            />
-            
-            <div className="absolute right-3 top-1/2 transform -translate-y-1/2 flex items-center gap-2">
-              <WaveButton variant="ghost" size="icon">
-                <Smile className="w-4 h-4" />
-              </WaveButton>
-            </div>
-          </div>
-          
-          <WaveButton variant="wave" size="icon">
-            <Send className="w-4 h-4" />
-          </WaveButton>
-        </div>
-        
-        <div className="flex items-center justify-between mt-3 text-xs text-text-muted">
-          <p>Используйте <span className="bg-surface-tertiary px-1 rounded">@username</span> для упоминания</p>
-          <p>Enter для отправки • Shift+Enter для новой строки</p>
-        </div>
+        <MessageInput />
       </div>
     </div>
   )

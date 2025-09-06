@@ -48,66 +48,77 @@ export function ChatSidebar({ className }: ChatSidebarProps) {
         </div>
       </div>
 
-      {/* Server List */}
+      {/* Servers - Minimized */}
+      <div className="px-4 py-2 border-b border-wave-border">
+        <div className="flex items-center gap-2 overflow-x-auto">
+          {servers.map((server) => (
+            <div
+              key={server.id}
+              className={cn(
+                "flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center text-xs font-semibold cursor-pointer transition-all",
+                server.active ? "bg-wave-gradient text-wave-primary-foreground" : "bg-surface-tertiary text-text-secondary hover:bg-surface-tertiary"
+              )}
+              title={server.name}
+            >
+              {server.name.split(' ').map(word => word[0]).join('')}
+            </div>
+          ))}
+          <WaveButton variant="ghost" size="icon" className="flex-shrink-0 w-8 h-8">
+            <Plus className="w-3 h-3" />
+          </WaveButton>
+        </div>
+      </div>
+
+      {/* Channels - Telegram Style */}
       <div className="p-4 border-b border-wave-border">
         <div className="flex items-center justify-between mb-3">
-          <h3 className="text-sm font-medium text-text-secondary uppercase tracking-wide">Servers</h3>
+          <h3 className="text-sm font-medium text-text-secondary uppercase tracking-wide">Каналы</h3>
           <WaveButton variant="ghost" size="icon">
             <Plus className="w-4 h-4" />
           </WaveButton>
         </div>
-        
-        <div className="space-y-2">
-          {servers.map((server) => (
-            <WaveCard
-              key={server.id}
-              variant={server.active ? "elevated" : "transparent"}
-              size="sm"
-              className={cn(
-                "cursor-pointer transition-all duration-200 hover:bg-surface-tertiary",
-                server.active && "ring-1 ring-wave-primary/30"
-              )}
-            >
-              <div className="flex items-center gap-3">
-                <div className={cn(
-                  "w-10 h-10 rounded-lg flex items-center justify-center text-sm font-semibold",
-                  server.active ? "bg-wave-gradient text-wave-primary-foreground" : "bg-surface-tertiary text-text-secondary"
-                )}>
-                  {server.name.split(' ').map(word => word[0]).join('')}
-                </div>
-                <span className="text-sm font-medium text-text-primary">{server.name}</span>
-              </div>
-            </WaveCard>
-          ))}
-        </div>
-      </div>
-
-      {/* Channels */}
-      <div className="p-4 border-b border-wave-border">
-        <h3 className="text-sm font-medium text-text-secondary uppercase tracking-wide mb-3">Channels</h3>
         <div className="space-y-1">
           {channels.map((channel) => (
             <div
               key={channel.id}
               className={cn(
-                "flex items-center gap-3 px-3 py-2 rounded-lg cursor-pointer transition-all duration-200 hover:bg-surface-tertiary",
-                channel.type === "voice" && channel.active && "bg-wave-primary/10 border border-wave-primary/20"
+                "flex items-center gap-3 px-3 py-3 rounded-xl cursor-pointer transition-all duration-200 hover:bg-surface-tertiary",
+                channel.type === "voice" && channel.active && "bg-wave-primary/10"
               )}
             >
-              {channel.type === "text" ? (
-                <Hash className="w-4 h-4 text-text-muted" />
-              ) : (
-                <Volume2 className={cn(
-                  "w-4 h-4",
-                  channel.active ? "text-wave-primary" : "text-text-muted"
-                )} />
-              )}
-              <span className="text-sm text-text-primary flex-1">{channel.name}</span>
-              {channel.unread > 0 && (
-                <span className="bg-wave-error text-white text-xs px-2 py-1 rounded-full min-w-[20px] text-center">
-                  {channel.unread}
-                </span>
-              )}
+              <div className="relative">
+                <div className={cn(
+                  "w-10 h-10 rounded-full flex items-center justify-center text-sm font-semibold",
+                  channel.type === "text" ? "bg-wave-primary text-wave-primary-foreground" : "bg-wave-success text-white"
+                )}>
+                  {channel.type === "text" ? (
+                    <Hash className="w-5 h-5" />
+                  ) : (
+                    <Volume2 className="w-5 h-5" />
+                  )}
+                </div>
+                {channel.type === "voice" && channel.active && (
+                  <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-wave-success rounded-full border-2 border-surface-primary">
+                    <div className="w-full h-full rounded-full bg-wave-success animate-pulse"></div>
+                  </div>
+                )}
+              </div>
+              
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2">
+                  <span className="text-sm font-medium text-text-primary truncate">
+                    {channel.type === "text" ? "#" : "🔊"} {channel.name}
+                  </span>
+                  {channel.unread > 0 && (
+                    <span className="bg-wave-primary text-wave-primary-foreground text-xs px-2 py-1 rounded-full min-w-[20px] text-center">
+                      {channel.unread}
+                    </span>
+                  )}
+                </div>
+                <p className="text-xs text-text-muted truncate">
+                  {channel.type === "text" ? "Текстовый канал" : channel.active ? "В голосовом канале" : "Голосовой канал"}
+                </p>
+              </div>
             </div>
           ))}
         </div>

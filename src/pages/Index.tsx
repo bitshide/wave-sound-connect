@@ -1,14 +1,58 @@
 import { ChatSidebar } from "@/components/ChatSidebar"
 import { ChatArea } from "@/components/ChatArea"
 import { MusicPlayer } from "@/components/MusicPlayer"
+import { PlaylistCreator } from "@/components/PlaylistCreator"
+import { CallsPage } from "@/components/CallsPage"
+import { SettingsPage } from "@/components/SettingsPage"
 import { WaveButton } from "@/components/WaveButton"
 import { WaveCard } from "@/components/WaveCard"
 import { Music, MessageCircle, Phone, Settings } from "lucide-react"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import waveHeroBg from "@/assets/wave-hero-bg.jpg"
 
 const Index = () => {
-  const [activeTab, setActiveTab] = useState<"chat" | "music">("chat")
+  const [activeTab, setActiveTab] = useState<"chat" | "music" | "calls" | "settings">("chat")
+  const [theme, setTheme] = useState<'classic' | 'dark' | 'light'>('classic')
+
+  useEffect(() => {
+    const savedTheme = localStorage.getItem('wave-theme') as 'classic' | 'dark' | 'light' || 'classic'
+    setTheme(savedTheme)
+    applyTheme(savedTheme)
+  }, [])
+
+  const applyTheme = (selectedTheme: 'classic' | 'dark' | 'light') => {
+    const root = document.documentElement
+    
+    if (selectedTheme === 'dark') {
+      root.style.setProperty('--background', '0 0% 4%')
+      root.style.setProperty('--surface-primary', '0 0% 8%')
+      root.style.setProperty('--surface-secondary', '0 0% 12%')
+      root.style.setProperty('--surface-tertiary', '0 0% 16%')
+    } else if (selectedTheme === 'light') {
+      root.style.setProperty('--background', '0 0% 98%')
+      root.style.setProperty('--surface-primary', '0 0% 100%')
+      root.style.setProperty('--surface-secondary', '0 0% 96%')
+      root.style.setProperty('--surface-tertiary', '0 0% 92%')
+      root.style.setProperty('--text-primary', '0 0% 10%')
+      root.style.setProperty('--text-secondary', '0 0% 30%')
+      root.style.setProperty('--text-muted', '0 0% 50%')
+    } else {
+      // Classic theme - reset to original values
+      root.style.setProperty('--background', '240 20% 6%')
+      root.style.setProperty('--surface-primary', '240 18% 8%')
+      root.style.setProperty('--surface-secondary', '240 16% 10%')
+      root.style.setProperty('--surface-tertiary', '240 14% 12%')
+      root.style.setProperty('--text-primary', '240 5% 84%')
+      root.style.setProperty('--text-secondary', '240 4% 64%')
+      root.style.setProperty('--text-muted', '240 3% 44%')
+    }
+  }
+
+  const handleThemeChange = (newTheme: 'classic' | 'dark' | 'light') => {
+    setTheme(newTheme)
+    localStorage.setItem('wave-theme', newTheme)
+    applyTheme(newTheme)
+  }
 
   return (
     <div className="min-h-screen bg-background flex">
@@ -36,13 +80,21 @@ const Index = () => {
           <Music className="w-5 h-5" />
         </WaveButton>
         
-        <WaveButton variant="ghost" size="icon">
+        <WaveButton
+          variant={activeTab === "calls" ? "wave" : "ghost"}
+          size="icon"
+          onClick={() => setActiveTab("calls")}
+        >
           <Phone className="w-5 h-5" />
         </WaveButton>
         
         <div className="flex-1"></div>
         
-        <WaveButton variant="ghost" size="icon">
+        <WaveButton
+          variant={activeTab === "settings" ? "wave" : "ghost"}
+          size="icon"
+          onClick={() => setActiveTab("settings")}
+        >
           <Settings className="w-5 h-5" />
         </WaveButton>
       </div>
@@ -53,6 +105,10 @@ const Index = () => {
           <ChatSidebar />
           <ChatArea />
         </>
+      ) : activeTab === "calls" ? (
+        <CallsPage />
+      ) : activeTab === "settings" ? (
+        <SettingsPage onThemeChange={handleThemeChange} currentTheme={theme} />
       ) : (
         <>
           {/* Music Interface */}
@@ -69,27 +125,7 @@ const Index = () => {
             </div>
 
             {/* Playlists */}
-            <div className="space-y-3">
-              <h3 className="text-sm font-medium text-text-secondary uppercase tracking-wide">Playlists</h3>
-              {[
-                { name: "Night Vibes", tracks: 24 },
-                { name: "Electronic Mix", tracks: 18 },
-                { name: "Chill Wave", tracks: 31 },
-                { name: "Gaming Music", tracks: 15 },
-              ].map((playlist, i) => (
-                <WaveCard key={i} variant="transparent" size="sm" className="cursor-pointer hover:bg-surface-tertiary transition-all">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-wave-gradient rounded-lg flex items-center justify-center">
-                      <Music className="w-5 h-5 text-wave-primary-foreground" />
-                    </div>
-                    <div>
-                      <p className="text-sm font-medium text-text-primary">{playlist.name}</p>
-                      <p className="text-xs text-text-muted">{playlist.tracks} tracks</p>
-                    </div>
-                  </div>
-                </WaveCard>
-              ))}
-            </div>
+            <PlaylistCreator />
           </div>
 
           {/* Music Main Area */}
